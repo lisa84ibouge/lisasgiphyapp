@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="giphy.css"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>Lisa's Giphy App</title>
+
+
+</head>
+<body>
+   <br>
+    <h1>Lisa's Giphy App</h1>
+   <br>
+    <div>
+    <button data-people="Reese Witherspoon">Legally Blonde</button>
+    <button data-people="Chris Hemsworth">Thor</button>
+    <button data-people="Leonardo DiCaprio">Leo</button>
+    <button data-people="Tom Cruise">Tom Cruise</button>
+    <button data-people="Samuel L. Jackson">Samuel L. Jackson</button>
+    <button data-reset="1">Reset</button>
+</div>
+
+<div id="gifsGoHere"></div>
+
+ <script type="text/javascript">
+    $('button').on('click', function(){
+        if ($(this).data("reset")=="1") {
+            $('#gifsGoHere').html("");
+            console.log("Cleared")
+            return;
+        }
+
+        var x = $(this).data("people");
+        console.log(x);
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + x + "&api_key=Dpp2fpYOdofHTSVfhC9pOf1eiSn7a10w&limit=10";
+   $.ajax({url:queryURL, method: "GET"})
+   .done(function(response){
+        for (var i = 0; i < response.data.length; i++){
+            var animalDiv = $('<div>');
+            var p = $('<p>').text("Rating: " + response.data[i].rating);
+                var animalImage = $('<img>');
+                animalImage.attr('src', response.data[i].images.fixed_height.url);
+                animalDiv.append(p);
+                animalDiv.append(animalImage);
+                $('#gifsGoHere').append(animalDiv);
+        }
+   })
+   
+    })
+    
+ </script>   
+
+
+</body>
+</html>

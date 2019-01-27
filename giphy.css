@@ -1,0 +1,15 @@
+body {
+    background-image: url("polkadots.jpg")
+}
+h1 {
+    text-align: center;
+    margin-top: 0px;
+    font-size: 100px;
+}
+
+div {
+    margin-top: 500px;
+    font-size: 250%;
+    text-align: center;
+    
+}
