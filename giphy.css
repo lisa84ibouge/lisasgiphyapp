@@ -1,15 +1,26 @@
+
 body {
     background-image: url("polkadots.jpg")
 }
+
+
+div {
+    margin-top: 300px;
+    font-size: 300%;
+    text-align: center;
+   
+}
+
 h1 {
     text-align: center;
     margin-top: 0px;
     font-size: 100px;
 }
-
-div {
-    margin-top: 500px;
-    font-size: 250%;
-    text-align: center;
+#peopleSearch {
+    font-size: 400%;
     
+}
+
+#resetButton {
+margin-left: 0px;
 }
