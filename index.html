@@ -1,59 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="giphy.css"> 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="giphy.css">
     <title>Lisa's Giphy App</title>
 
 
 </head>
+
 <body>
-   <br>
+    <br>
     <h1>Lisa's Giphy App</h1>
-   <br>
-    <div>
-    <button data-people="Reese Witherspoon">Legally Blonde</button>
-    <button data-people="Chris Hemsworth">Thor</button>
-    <button data-people="Leonardo DiCaprio">Leo</button>
-    <button data-people="Tom Cruise">Tom Cruise</button>
-    <button data-people="Samuel L. Jackson">Samuel L. Jackson</button>
-    <button data-reset="1">Reset</button>
-</div>
+    <br>
+    <div id="buttonsGoHere">
+        <button data-people="Reese Witherspoon">Legally Blonde</button>
+        <button data-people="Chris Hemsworth">Thor</button>
+        <button data-people="Leonardo DiCaprio">Leo</button>
+        <button data-people="Tom Cruise">Tom Cruise</button>
+        <button data-people="Samuel L. Jackson">Samuel L. Jackson</button>
+    </div>
+    <div id="resetButton">
+        <button data-reset="1">Reset</button>
+    </div>
+    <br>
+    <div id="peopleSearch">
+        <form id="people-form">
+            <label for="people-input">Add a topic!</label>
+            <input type="text" id="people-input"><br>
+            <br>
+            <!-- Button triggers new movie to be added -->
+            <input id="add-people" type="submit" value="Add!">
+        </form>
+    </div>
 
-<div id="gifsGoHere"></div>
+    <div id="gifsGoHere"></div>
 
- <script type="text/javascript">
-    $('button').on('click', function(){
-        if ($(this).data("reset")=="1") {
-            $('#gifsGoHere').html("");
-            console.log("Cleared")
-            return;
-        }
+    <script type="text/javascript">
+        var buttonHandler = function () {
+            if ($(this).data("reset") == "1") {
+                //  $('#gifsGoHere').html("");
+                //  console.log("Cleared")
+                window.location.reload();
+                return;
+            }
 
-        var x = $(this).data("people");
-        console.log(x);
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + x + "&api_key=Dpp2fpYOdofHTSVfhC9pOf1eiSn7a10w&limit=10";
-   $.ajax({url:queryURL, method: "GET"})
-   .done(function(response){
-        for (var i = 0; i < response.data.length; i++){
-            var animalDiv = $('<div>');
-            var p = $('<p>').text("Rating: " + response.data[i].rating);
-                var animalImage = $('<img>');
-                animalImage.attr('src', response.data[i].images.fixed_height.url);
-                animalDiv.append(p);
-                animalDiv.append(animalImage);
-                $('#gifsGoHere').append(animalDiv);
-        }
-   })
-   
-    })
-    
- </script>   
+            var personName = $(this).data("people");
+            console.log(personName);
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + personName +
+                "&api_key=Dpp2fpYOdofHTSVfhC9pOf1eiSn7a10w&limit=10";
+            $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                })
+                .done(function (response) {
+                    for (var i = 0; i < response.data.length; i++) {
+                        var animalDiv = $('<div>');
+                        var p = $('<p>').text("Rating: " + response.data[i].rating);
+                        var animalImage = $('<img>');
+                        animalImage.attr('src', response.data[i].images.fixed_height.url);
+                        animalDiv.append(p);
+                        animalDiv.append(animalImage);
+                        $('#gifsGoHere').append(animalDiv);
+                    }
+                })
+
+        };
+        $('button').on('click', buttonHandler);
+
+
+
+        $("#add-people").on("click", function (event) {
+            event.preventDefault();
+            // Then dynamicaly generating buttons for each movie in the array.
+            // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
+            var people = $("#people-input").val().trim();
+            var button = $("<button>");
+            // Adding a class
+            // a.addClass("people");
+            // Adding a data-attribute with a value of the movie at index i
+            button.attr("data-people", people);
+            // Providing the button's text with a value of the movie at index i
+            button.text(people);
+            // Adding the button to the HTML
+            $("#buttonsGoHere").append(button);
+            button.on("click", buttonHandler);
+
+        });
+    </script>
 
 
 </body>
+
 </html>
